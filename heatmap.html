@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="./heatmap.css" type="text/css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    
+</head>
+
+   
+
+<body>
+    <div class="circle"></div> 
+    <button id="annotator" onclick="filter_name()">Annotator</button>
+
+    <div class="graph_container">
+        <div class="month_row">
+            <span>Aug</span>
+            <span>Sep</span>
+            <span>Oct</span>
+            <span>Nov</span>
+            <span>Dec</span>
+            <span>Jan</span>
+            <span>Feb</span>
+            <span>Mar</span>
+            <span>Apr</span>
+            <span>May</span>
+            <span>Jun</span>
+            <span>Jul</span>
+        </div>
+        <div class="canvas_container">
+            <div class="day_column">
+                <span>Mon</span>
+                <span>Wed</span>
+                <span>Fri</span>
+            </div>
+            <canvas id="myCanvas" width="620" height="90"></canvas> 
+        </div>
+    </div>
+
+    <button class="random" onclick="show_activity()">Show Activity</button>
+    
+</body>
+
+<script>
+
+drawGraph();
+function show_activity() {
+    activity_index= Math.floor((Math.random() * 364) + 1);
+    drawGraph(activity_index);
+}
+
+
+function drawGraph(activity_index) {
+
+    var c=document.getElementById("myCanvas");
+    // blurr because it's a bitmap format. find a library to draw canvas with vectors instead.
+    var ctx=c.getContext("2d",{antialias:true,});
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, 620, 90);
+
+    var x = 10;
+    var y = 12;
+    for (i=0; i<365; i++) { 
+        x += 12;
+        drawCircle(x,y, "#EBEDF0");
+        if (i===49 || i===99 || i===149 || i===199 || i===249 || i===299 || i===349 ) {
+            x = 10;
+            y+= 12;
+        }
+        //cas où i ===activity_index et i === 49, 99, ... à gérer
+        if (i===activity_index) {
+            drawCircle(x,y, "#000000");
+            drawCircle(x,y, "#039BE5");
+        }
+
+    }
+   
+}
+
+function drawCircle(x,y,color) {
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d",{antialias:true,});
+    ctx.beginPath();
+    ctx.arc(x,y,5,0,2*Math.PI);
+    ctx.fillStyle = color;
+    ctx.fill();
+}
+
+
+function filter_name() {
+document.getElementById("annotator").innerHTML = "Arnaud Rachez";
+}
+</script>
+
+</html>
