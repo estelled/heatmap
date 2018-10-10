@@ -5,6 +5,10 @@
     background-color: #EBEDF0;
 }
 
+.blue {
+    background-color: 'blue';
+}
+
 button {
     margin : 50px;
     width: 94px;
@@ -44,6 +48,13 @@ button {
     flex-direction: row;
     align-self:center;
 
+}
+.row {
+    display: flex;
+}
+#canvas {
+    display: flex;
+    flex-direction: column;
 }
 
 .day_column{

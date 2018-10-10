@@ -33,7 +33,7 @@
                 <span>Wed</span>
                 <span>Fri</span>
             </div>
-            <canvas id="myCanvas" width="620" height="90"></canvas> 
+            <div id="canvas" width="620" height="90"></div> 
         </div>
     </div>
 
@@ -43,47 +43,42 @@
 
 <script>
 
-drawGraph();
+var data = [
+    '2018-08-10'= 10,
+];
+
+drawGraph(data);
+
 function show_activity() {
-    activity_index= Math.floor((Math.random() * 364) + 1);
-    drawGraph(activity_index);
+    var circle = document.getElementById('157');
+    circle.style.backgroundColor = 'blue';
 }
 
 
 function drawGraph(activity_index) {
 
-    var c=document.getElementById("myCanvas");
-    // blurr because it's a bitmap format. find a library to draw canvas with vectors instead.
-    var ctx=c.getContext("2d",{antialias:true,});
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, 620, 90);
+    var c = document.getElementById('canvas');
 
-    var x = 10;
-    var y = 12;
-    for (i=0; i<365; i++) { 
-        x += 12;
-        drawCircle(x,y, "#EBEDF0");
-        if (i===49 || i===99 || i===149 || i===199 || i===249 || i===299 || i===349 ) {
-            x = 10;
-            y+= 12;
+    numRow = 7;
+    numCol = Math.floor(365 / numRow);
+    for (i=0; i<numRow; i++) {
+        // Create  row to receive the circles
+        var row = document.createElement('div');
+        row.className +=  'row';
+        c.appendChild(row);
+        for (j=0; j<numCol; j++) {
+            // Add circles to the row
+            var circle = document.createElement('div');
+            circle.className += 'circle';
+            circle.setAttribute('id', i * numCol + j);
+            row.appendChild(circle);
         }
-        //cas où i ===activity_index et i === 49, 99, ... à gérer
-        if (i===activity_index) {
-            drawCircle(x,y, "#000000");
-            drawCircle(x,y, "#039BE5");
-        }
-
     }
-   
 }
 
-function drawCircle(x,y,color) {
-    var c=document.getElementById("myCanvas");
-    var ctx=c.getContext("2d",{antialias:true,});
-    ctx.beginPath();
-    ctx.arc(x,y,5,0,2*Math.PI);
-    ctx.fillStyle = color;
-    ctx.fill();
+function addRow(parentElem) {
+    var div = document.createElement('div');
+    parentElem.appendChild(div)
 }
 
 
