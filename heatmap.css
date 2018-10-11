@@ -68,10 +68,3 @@ button {
     margin-right: 5px;
 }
 
-
- /*why does placing a class in its parent's brakets make it stop working ?  */
- .parent {
-     .child {
-
-     }
- }

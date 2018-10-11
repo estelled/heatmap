@@ -1,90 +1,42 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link href="./heatmap.css" type="text/css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    
-</head>
+    <head>
+        <link href="./heatmap.css" type="text/css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    </head>
 
    
 
-<body>
-    <div class="circle"></div> 
-    <button id="annotator" onclick="filter_name()">Annotator</button>
+    <body>
+        <div class="circle"></div> 
+        <button id="annotator" onclick="filter_name()">Annotator</button>
 
-    <div class="graph_container">
-        <div class="month_row">
-            <span>Aug</span>
-            <span>Sep</span>
-            <span>Oct</span>
-            <span>Nov</span>
-            <span>Dec</span>
-            <span>Jan</span>
-            <span>Feb</span>
-            <span>Mar</span>
-            <span>Apr</span>
-            <span>May</span>
-            <span>Jun</span>
-            <span>Jul</span>
-        </div>
-        <div class="canvas_container">
-            <div class="day_column">
-                <span>Mon</span>
-                <span>Wed</span>
-                <span>Fri</span>
+        <div class="graph_container">
+            <div class="month_row">
+                <span>Aug</span>
+                <span>Sep</span>
+                <span>Oct</span>
+                <span>Nov</span>
+                <span>Dec</span>
+                <span>Jan</span>
+                <span>Feb</span>
+                <span>Mar</span>
+                <span>Apr</span>
+                <span>May</span>
+                <span>Jun</span>
+                <span>Jul</span>
             </div>
-            <div id="canvas" width="620" height="90"></div> 
+            <div class="canvas_container">
+                <div class="day_column">
+                    <span>Mon</span>
+                    <span>Wed</span>
+                    <span>Fri</span>
+                </div>
+                <div id="canvas" width="620" height="90"></div> 
+            </div>
         </div>
-    </div>
-
-    <button class="random" onclick="show_activity()">Show Activity</button>
-    
-</body>
-
-<script>
-
-var data = [
-    '2018-08-10'= 10,
-];
-
-drawGraph(data);
-
-function show_activity() {
-    var circle = document.getElementById('157');
-    circle.style.backgroundColor = 'blue';
-}
-
-
-function drawGraph(activity_index) {
-
-    var c = document.getElementById('canvas');
-
-    numRow = 7;
-    numCol = Math.floor(365 / numRow);
-    for (i=0; i<numRow; i++) {
-        // Create  row to receive the circles
-        var row = document.createElement('div');
-        row.className +=  'row';
-        c.appendChild(row);
-        for (j=0; j<numCol; j++) {
-            // Add circles to the row
-            var circle = document.createElement('div');
-            circle.className += 'circle';
-            circle.setAttribute('id', i * numCol + j);
-            row.appendChild(circle);
-        }
-    }
-}
-
-function addRow(parentElem) {
-    var div = document.createElement('div');
-    parentElem.appendChild(div)
-}
-
-
-function filter_name() {
-document.getElementById("annotator").innerHTML = "Arnaud Rachez";
-}
-</script>
-
+        <button class="random" onclick="show_activity()">Show Activity</button>
+        
+        <script type="text/javascript" src="heatmap.js"></script>
+    </body>
 </html>
