@@ -12,9 +12,9 @@
     display: inline-block;
 }
 
-.tooltip .tooltip-text{
+.tooltip .tooltipText{
     visibility: hidden;
-    background-color: rgb(50,50,50,0.9);
+    background-color: rgb(50,50,50,0.8);
     padding: 10px 0px 5px 0px;
     border-radius: 2px;
     width: 200px;
@@ -24,7 +24,8 @@
     position: absolute;
     z-index: 1;
     bottom: 150%;
-    left: 5%;
+    left: 50%;  
+    margin-left: -100px;
 
     /* text */
     font-family: 'Roboto', sans-serif;
@@ -34,19 +35,19 @@
 }
 
 
-.tooltip:hover .tooltip-text {
+.tooltip:hover .tooltipText {
     visibility: visible;
 }
 
-.tooltip .tooltip-text::after {
+.tooltip .tooltipText::after {
     content: " ";
     position: absolute;
-    top: 100%; /* At the bottom of the tooltip */
+    top: 100%; 
     left: 50%;
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: rgb(50,50,50,0.9) transparent transparent transparent;
+    border-color: rgb(50,50,50,0.8) transparent transparent transparent;
 }
 
 .blue {
