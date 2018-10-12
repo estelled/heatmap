@@ -35,11 +35,12 @@ function drawGraph() {
       row.className +=  'row';
       c.appendChild(row);
       for (j=0; j<numCol; j++) {
-          // Add circles to the row
-          var circle = document.createElement('div');
-          circle.className += 'circle';
+          // Add tooltiped_circles to the row
+          var elements = create_tooltiped_circle();
+          var tooltip = elements[0];
+          var circle = elements [1]
           circle.setAttribute('id', i * numCol + j);
-          row.appendChild(circle);
+          row.appendChild(tooltip);
       }
   }
 }
@@ -50,3 +51,22 @@ function filter_name() {
 document.getElementById("annotator").innerHTML = "Arnaud Rachez";
 }
    
+//returns circle
+/*
+<div class="tooltip">
+<div class= "circle" style="margin-left:100px;"></div>
+<span class="tooltipText">4 contributions on Jul 24, 2018</span>  
+</div>
+*/
+function create_tooltiped_circle() {
+  var tooltip = document.createElement('div');
+  tooltip.className += 'tooltip';
+  var circle = document.createElement('div');
+  circle.className += 'circle';
+  tooltip.appendChild(circle);
+  var tooltipText = document.createElement('span');
+  tooltipText.className += 'tooltipText';
+  tooltipText.innerHTML = "4 contributions on Jul 24, 2018";
+  tooltip.appendChild(tooltipText);
+  return [tooltip, circle];
+}
