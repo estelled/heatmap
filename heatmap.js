@@ -6,13 +6,43 @@
 
 drawGraph();
 
+var contTable = [['2018-09-24','8'],['2018-06-12','24'],['2018-02-24','35'],['2018-07-24','2'],['2018-12-24','34'],['2018-06-14','18']]
+
 /* 
 x= Id, y=color.  
 y=0 : very clear    y=1 : clear   y=2 : normal    y=3 : dark  
 */
 var idTable = [['1','0'],['15','0'],['45','1'],['76','2'],['77','3'],['79','2'],['147','2'],['200','3']];
 var colorTable = ['#BBE3F4','#82C9EB','#039BE5','#0A25B1'];
+
 show_activity(idTable,colorTable);
+
+toId('2018-07-24');
+
+function toId(contDate) {
+  var startMonth = 08 ;
+  var date = new Date(contDate);
+  var month = date.getMonth()+1; //0->11 range to 1->12 
+  // fix needed later : deal with 28 & 30 & 31 month difference
+  var id = date.getDate();
+  var temp = month-startMonth
+  if (temp >=0) {
+    id += temp*30;
+  } else {
+    id += (12-startMonth+month)*30;
+  }
+  return id;
+}
+
+function toValue(contNumber) {
+
+  return color;
+}
+
+function convertTable(contTable) {
+
+  return idTable;
+}
 
 function show_activity(idTable,colorTable) {
   var length = idTable.length;
