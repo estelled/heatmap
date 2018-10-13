@@ -34,9 +34,22 @@ function toId(contDate) {
   return id;
 }
 
-function toValue(contNumber) {
 
-  return color;
+function toValue(contNumber,contMax) {
+  if (contNumber==0 || contMax==0){
+    return null;
+  }
+  var ratio = contNumber/contMax*100;
+  if (ratio <= 25){
+    return 0;
+  } else if (ratio <= 50){
+    return 1;
+  } else if (ratio <= 75){
+    return 2;
+  } else {
+    return 3;
+  }
+  
 }
 
 function convertTable(contTable) {
