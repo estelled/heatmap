@@ -1,29 +1,21 @@
-// var data = [
-//   '2018-08-10'= 10,
-// ];
-
-// drawGraph(data);
-
-drawGraph();
-
+/* input : Table with contributions > 0. remove all input where contributions = 0 */
 var contTable = [['2018-09-24','8'],['2018-06-12','24'],['2018-02-24','35'],['2018-07-24','2'],['2018-12-24','34'],['2018-06-14','18']]
-
 /* 
 x= Id, y=color.  
 y=0 : very clear    y=1 : clear   y=2 : normal    y=3 : dark  
 */
-var idTable = [['1','0'],['15','0'],['45','1'],['76','2'],['77','3'],['79','2'],['147','2'],['200','3']];
 var colorTable = ['#BBE3F4','#82C9EB','#039BE5','#0A25B1'];
 
-show_activity(idTable,colorTable);
+drawGraph(contTable);
+show_activity(contTable,colorTable);
+show_info(contTable);
 
-toId('2018-07-24');
 
 function toId(contDate) {
   var startMonth = 08 ;
   var date = new Date(contDate);
   var month = date.getMonth()+1; //0->11 range to 1->12 
-  // fix needed later : deal with 28 & 30 & 31 month difference
+  // fix needed later : deal with 28 & 30 & 31 month difference . Deal with year transition.
   var id = date.getDate();
   var temp = month-startMonth
   if (temp >=0) {
@@ -52,21 +44,44 @@ function toValue(contNumber,contMax) {
   
 }
 
-function convertTable(contTable) {
-
-  return idTable;
+function findMax(contTable) {
+  var length = contTable.length;
+  var max = 0;
+  for (i=0; i<length; i++) {
+    temp = contTable[i][1];
+    max = Math.max(temp,max) ;
+  }
+  return max
 }
 
-function show_activity(idTable,colorTable) {
-  var length = idTable.length;
+function show_activity(contTable,colorTable) {
+  var length = contTable.length;
+  var contMax = findMax(contTable);
     for (i=0; i<length; i++) {
-      var circle = document.getElementById(idTable[i][0]);
-      circle.style.backgroundColor = colorTable[idTable[i][1]];
+      var id = toId(contTable[i][0]);
+      var value = toValue(contTable[i][1],contMax);
+      var circle = document.getElementById(id);
+      circle.style.backgroundColor = colorTable[value];
+  }
+}
+
+/** show date even on no contributions */
+function show_info(contTable){
+  var length = contTable.length;
+  for (i=0; i<length; i++) {
+    var id = toId(contTable[i][0]);
+    var idText = id + 1000; //to make it different from cicle
+    var date = new Date(contTable[i][0]);
+    var number = contTable[i][1] ;
+    var text = document.getElementById(idText);
+    text.innerHTML = "";
+    text.innerHTML = number+" contributions"+" on "+ date.toDateString();
   }
 }
 
 
-function drawGraph() {
+/**change id to fit with the id of contTable */
+function drawGraph(contTable) {
 
   var c = document.getElementById('canvas');
 
@@ -81,18 +96,18 @@ function drawGraph() {
           // Add tooltiped_circles to the row
           var elements = create_tooltiped_circle();
           var tooltip = elements[0];
-          var circle = elements [1]
+          var circle = elements[1];
+          var text = elements[2];
           circle.setAttribute('id', i * numCol + j);
+          text.setAttribute('id', i * numCol + j +1000);  
           row.appendChild(tooltip);
+          // show default message 
+          text.innerHTML = "no contributions";
       }
   }
 }
 
 
-
-function filter_name() {
-document.getElementById("annotator").innerHTML = "Arnaud Rachez";
-}
    
 //returns circle
 /*
@@ -109,7 +124,7 @@ function create_tooltiped_circle() {
   tooltip.appendChild(circle);
   var tooltipText = document.createElement('span');
   tooltipText.className += 'tooltipText';
-  tooltipText.innerHTML = "4 contributions on Jul 24, 2018";
+  //tooltipText.innerHTML = "4 contributions on Jul 24, 2018";
   tooltip.appendChild(tooltipText);
-  return [tooltip, circle];
+  return [tooltip, circle,tooltipText];
 }
