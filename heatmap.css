@@ -3,8 +3,7 @@
     height: 11px;
     border-radius: 50%;
     background-color: #EBEDF0;
-    margin: 1px;
-
+    margin : 1px;
 }
 
 .tooltip {
@@ -81,7 +80,7 @@ button {
     width:620px ;
     display: flex;
     flex-direction:row ;
-    justify-content:space-evenly;
+    justify-content:space-between;
     font-size: 11px;
     color : #414660; 
     margin-left: 20px;  
@@ -95,12 +94,15 @@ button {
     align-self:center;
 
 }
-.row {
-    display: flex;
-}
+
 #canvas {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+}
+
+.col {
+    display : flex;
+    flex-direction : column;
 }
 
 .day_column{

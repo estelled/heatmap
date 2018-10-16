@@ -1,31 +1,54 @@
 /* input : Table with contributions > 0. remove all input where contributions = 0 */
-var contTable = [['2018-09-24','8'],['2018-06-12','24'],['2018-02-24','35'],['2018-07-24','2'],['2018-12-24','34'],['2018-06-14','18']]
+var inputTable = [['2018-08-01','8'],['2018-06-12','24'],['2019-02-24','35'],['2019-07-24','2'],['2018-12-24','34'],['2019-07-25','18']]
 /* 
 x= Id, y=color.  
 y=0 : very clear    y=1 : clear   y=2 : normal    y=3 : dark  
 */
 var colorTable = ['#BBE3F4','#82C9EB','#039BE5','#0A25B1'];
+var startDate = '2018-08-01';
+var contTable = yearClean(inputTable,startDate);
+drawGraph(contTable,startDate);
+show_activity(contTable,colorTable,startDate);
+show_info(contTable, startDate);
 
-drawGraph(contTable);
-show_activity(contTable,colorTable);
-show_info(contTable);
+//returns contTable with only the data regarding the ongoing year.
+function yearClean(inputTable,startDate){
+  var contTable = inputTable.slice(0); //copy of input
+  var length = inputTable.length;
+  var endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate()+ 365);
+  var startDate = new Date(startDate)
 
-
-function toId(contDate) {
-  var startMonth = 08 ;
-  var date = new Date(contDate);
-  var month = date.getMonth()+1; //0->11 range to 1->12 
-  // fix needed later : deal with 28 & 30 & 31 month difference . Deal with year transition.
-  var id = date.getDate();
-  var temp = month-startMonth
-  if (temp >=0) {
-    id += temp*30;
-  } else {
-    id += (12-startMonth+month)*30;
+  for (i=0; i<length; i++) {
+    tempDate = new Date(inputTable[i][0]);
+    tempId = inputTable[i][1];
+    if (tempDate<startDate || tempDate>endDate){
+      alert("tempId = " +tempId);
+      contTable.splice(i,1);
+    } else {}
   }
-  return id;
+  return contTable;
 }
 
+//IdtoDate(startDate,24);
+
+function IdtoDate(startDate,id){
+  var result = new Date(startDate);
+  result.setDate(result.getDate() + id);
+  //alert("IdtoDate of 24 = " +result.toDateString());
+  return result;
+}
+
+//DatetoId('2018-08-25',startDate);
+
+function DatetoId(contDate,startDate){
+  var startDate = new Date(startDate);
+  var contDate = new Date(contDate);
+  var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+  var id = Math.round(Math.abs((startDate.getTime() - contDate.getTime())/(oneDay)));
+  //alert("DatetoId of 2018-08-25 = " + id);
+  return id;
+}
 
 function toValue(contNumber,contMax) {
   if (contNumber==0 || contMax==0){
@@ -54,11 +77,11 @@ function findMax(contTable) {
   return max
 }
 
-function show_activity(contTable,colorTable) {
+function show_activity(contTable,colorTable, startDate) {
   var length = contTable.length;
   var contMax = findMax(contTable);
     for (i=0; i<length; i++) {
-      var id = toId(contTable[i][0]);
+      var id = DatetoId(contTable[i][0],startDate);
       var value = toValue(contTable[i][1],contMax);
       var circle = document.getElementById(id);
       circle.style.backgroundColor = colorTable[value];
@@ -66,11 +89,11 @@ function show_activity(contTable,colorTable) {
 }
 
 /** show date even on no contributions */
-function show_info(contTable){
+function show_info(contTable,startDate){
   var length = contTable.length;
   for (i=0; i<length; i++) {
-    var id = toId(contTable[i][0]);
-    var idText = id + 1000; //to make it different from cicle
+    var id = DatetoId(contTable[i][0],startDate);
+    var idText = id + 1000; //to make it different from circle
     var date = new Date(contTable[i][0]);
     var number = contTable[i][1] ;
     var text = document.getElementById(idText);
@@ -80,32 +103,35 @@ function show_info(contTable){
 }
 
 
-/**change id to fit with the id of contTable */
-function drawGraph(contTable) {
+/** Find a way to add the last missing days of the year */
+function drawGraph(contTable, startDate) {
 
   var c = document.getElementById('canvas');
 
-  numRow = 7;
+  numRow = 7; //number of days in a week
   numCol = Math.floor(365 / numRow);
-  for (i=0; i<numRow; i++) {
-      // Create  row to receive the circles
-      var row = document.createElement('div');
-      row.className +=  'row';
-      c.appendChild(row);
-      for (j=0; j<numCol; j++) {
+  id = 0;
+    for (i=0; i<numCol; i++) {
+      // Create  col to receive the circles
+      var col = document.createElement('div');
+      col.className +=  'col';
+      c.appendChild(col);
+      for (j=0; j<numRow; j++) {
           // Add tooltiped_circles to the row
           var elements = create_tooltiped_circle();
           var tooltip = elements[0];
           var circle = elements[1];
           var text = elements[2];
-          circle.setAttribute('id', i * numCol + j);
-          text.setAttribute('id', i * numCol + j +1000);  
-          row.appendChild(tooltip);
+          var id = i * numRow + j;
+          circle.setAttribute('id', id);
+          text.setAttribute('id', id +1000);  
+          col.appendChild(tooltip);
           // show default message 
-          text.innerHTML = "no contributions";
-      }
-  }
-}
+          var date = IdtoDate(startDate,id);
+          text.innerHTML = "no contributions on "+ date.toDateString() ;
+        }
+    }
+}//drawGraph()
 
 
    
@@ -124,7 +150,6 @@ function create_tooltiped_circle() {
   tooltip.appendChild(circle);
   var tooltipText = document.createElement('span');
   tooltipText.className += 'tooltipText';
-  //tooltipText.innerHTML = "4 contributions on Jul 24, 2018";
   tooltip.appendChild(tooltipText);
   return [tooltip, circle,tooltipText];
 }
