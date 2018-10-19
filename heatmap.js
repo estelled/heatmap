@@ -1,12 +1,26 @@
 /* input : Table with contributions > 0. remove all input where contributions = 0 */
 var inputTable = [['2019-08-03', '86'], ['2015-06-04', '99'], ['2018-06-12', '24'], ['2018-08-01', '8'], ['2019-02-24', '35'], ['2019-07-24', '2'], ['2018-12-24', '34'], ['2019-07-31', '18']]
 var colorTable = ['#BBE3F4', '#82C9EB', '#039BE5', '#0A25B1'];
-var startDate = '2019-01-01';
+var startDate = '2019-03-02';
 
 var contTable = yearClean(inputTable, startDate);
+showMonth(startDate);
 drawGraph(startDate);
 showActivity(contTable, colorTable, startDate);
 showInfo(contTable, startDate);
+
+function showMonth(startDate) {
+  var monthTable = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var startDate =  new Date(startDate);
+  var startMonth = startDate.getMonth(); //1-12
+  var monthRow = document.getElementsByClassName("month-row");
+    for (i=0; i<12; i++){
+      var mIndex = (startMonth+i) % 12;
+      var month = document.createElement('span');
+      month.innerHTML = monthTable[mIndex];
+      monthRow[0].appendChild(month); //index needed because class and not id
+  } 
+}
 
 // a year has 366 days every 4 year. bissextile function no enough, had to check if february in the year, getting messy.
 function calcYearDays(startDate) {
@@ -41,7 +55,6 @@ function yearClean(inputTable, startDate) {
 
   return contTable;
 }
-
 
 function id2date(startDate, id) {
   var result = new Date(startDate);
@@ -113,7 +126,6 @@ function drawGraph(startDate) {
 
   var c = document.getElementById('canvas');
   var daysInYear = calcYearDays(startDate);
-  alert("days in year = "+daysInYear);
   numRow = 7; //number of days in a week
   numCol = Math.floor(daysInYear / numRow);
   lastRow = daysInYear - (numRow * numCol);
@@ -143,8 +155,6 @@ function drawGraph(startDate) {
     }
   }
 }//drawGraph()
-
-
 
 function createTooltipedCircle() {
   var tooltip = document.createElement('div');

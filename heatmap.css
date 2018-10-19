@@ -63,7 +63,7 @@ button {
     border: none;
 }
 
-.graph_container {
+.graph-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -76,7 +76,7 @@ button {
 
 }
 
-.month_row {
+.month-row {
     width: 620px;
     display: flex;
     flex-direction: row;
@@ -88,7 +88,7 @@ button {
 
 }
 
-.canvas_container {
+.canvas-container {
     display: flex;
     flex-direction: row;
     align-self: center;
@@ -105,7 +105,7 @@ button {
     flex-direction: column;
 }
 
-.day_column{
+.day-column{
     width: 20px;
     height: 90px;
     display: flex;
