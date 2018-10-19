@@ -1,23 +1,23 @@
 /* input : Table with contributions > 0. remove all input where contributions = 0 */
 var inputTable = [['2019-08-03', '86'], ['2015-06-04', '99'], ['2018-06-12', '24'], ['2018-08-01', '8'], ['2019-02-24', '35'], ['2019-07-24', '2'], ['2018-12-24', '34'], ['2019-07-31', '18']]
 var colorTable = ['#BBE3F4', '#82C9EB', '#039BE5', '#0A25B1'];
-var startDate = '2018-08-01';
+var startDate = '2019-01-01';
 
 var contTable = yearClean(inputTable, startDate);
 drawGraph(startDate);
 showActivity(contTable, colorTable, startDate);
 showInfo(contTable, startDate);
 
-// a year has 366 days every 4 year. NO DONE YET, might not be needed. check if done ?
+// a year has 366 days every 4 year. bissextile function no enough, had to check if february in the year, getting messy.
 function calcYearDays(startDate) {
-  var start = new Date(startDate);
-  var day = starDate.getdate() + 1;
-  var month = starDate.getMonth();
-  var year = startDate.getyear() + 1;
-  var end = new Date(year, month, day);
+  var startDate = new Date(startDate);
+  var day = startDate.getDate();
+  var month = startDate.getMonth();
+  var year = startDate.getFullYear() + 1;
+  var endDate = new Date(year, month, day);
 
   var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-  var days = Math.round(Math.abs((end.getTime() - start.getTime()) / (oneDay)));
+  var days = Math.round(Math.abs((endDate.getTime() - startDate.getTime()) / (oneDay)));
 
   return days;
 }
@@ -27,8 +27,9 @@ function yearClean(inputTable, startDate) {
   var contTable = inputTable.slice(0); //copy of input
   var length = inputTable.length;
   var endDate = new Date(startDate);
-  endDate.setDate(endDate.getDate() + 364); //change later with exact year days number
-  var startDate = new Date(startDate)
+  var daysInYear = calcYearDays(startDate);
+  endDate.setDate(endDate.getDate() + daysInYear); //change later with exact year days number
+  var startDate = new Date(startDate);
   //reverse loop to not mess up the index after splice
   for (i = length - 1; i >= 0; i--) {
     tempDate = new Date(inputTable[i][0]);
@@ -111,10 +112,11 @@ function showInfo(contTable, startDate) {
 function drawGraph(startDate) {
 
   var c = document.getElementById('canvas');
-
+  var daysInYear = calcYearDays(startDate);
+  alert("days in year = "+daysInYear);
   numRow = 7; //number of days in a week
-  numCol = Math.floor(365 / numRow);
-  lastRow = 365 - (numRow * numCol);
+  numCol = Math.floor(daysInYear / numRow);
+  lastRow = daysInYear - (numRow * numCol);
   id = 0;
   if (lastRow > 0) {
     numCol += 1;
